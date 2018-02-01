@@ -378,7 +378,7 @@ public class OpenShiftOAuth2SecurityRealm extends SecurityRealm {
 
             provider = getOpenShiftOAuthProvider(credential, transport);
             if (withinAPod)
-                LOGGER.info(String.format("OpenShift OAuth: provider: %s",
+                LOGGER.debug(String.format("OpenShift OAuth: provider: %s",
                         provider));
             if (provider != null) {
                 // the issuer is the public address of the k8s svc; use this vs.
