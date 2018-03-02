@@ -821,9 +821,15 @@ public class OpenShiftOAuth2SecurityRealm extends SecurityRealm {
                             newAuthMgr.add(Item.READ, matrixKey);
                             newAuthMgr.add(Item.DISCOVER, matrixKey);
                             newAuthMgr.add(CredentialsProvider.VIEW, matrixKey);
-                        }
-                        if (allowedRoles.contains("edit")
-                                || allowedRoles.contains("admin")) {
+
+                            // HACK: this part differs from upstream implementation
+                            //
+                            // We don't want users to be able to edit the Jenkins namespace so the
+                            // plan is to remove the `edit` role and in doing so they lose the right
+                            // to start a build with the upstream implementation of granting these
+                            // rights only for `edit` role.
+                            // This hack works around it by copying all `edit` ACL to `view`
+
                             newAuthMgr.add(Item.BUILD, matrixKey);
                             newAuthMgr.add(Item.CONFIGURE, matrixKey);
                             newAuthMgr.add(Item.CREATE, matrixKey);
@@ -831,6 +837,8 @@ public class OpenShiftOAuth2SecurityRealm extends SecurityRealm {
                             newAuthMgr.add(Item.WORKSPACE, matrixKey);
                             newAuthMgr.add(SCM.TAG, matrixKey);
                             newAuthMgr.add(Jenkins.RUN_SCRIPTS, matrixKey);
+
+                            // END of HACK
                         }
                         if (allowedRoles.contains("admin")) {
                             newAuthMgr.add(Computer.CONFIGURE, matrixKey);
