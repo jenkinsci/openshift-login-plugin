@@ -1,7 +1,10 @@
 # openshift-login
 
-
-A Jenkins plugin which lets you login to Jenkins with your account on an OpenShift installation.
+This is a **fork** of the [upstream jenkinsci/openshift-login-plugin][upstream] with a minor
+change to the role mapping. This fork lets you login to Jenkins with your account
+on an OpenShift installation and allows you to trigger builds if the available
+role is atleast `view` which is different to the upstream implementation that
+lets you build only if you have the `edit` role.
 
 
 ## Primary scenario
@@ -58,14 +61,13 @@ Jenkins using the example [jenkins-ephemeral](https://github.com/openshift/origi
 Once authenticated, OpenShift roles determine which Jenkins permissions you have.  Any user with the OpenShift `admin` role for the OpenShift project Jenkins is running in will have the same permissions as those assigned to an administrative user within Jenkins.
 Users with the `edit` or `view` roles for the OpenShift project Jenkins is running in will have progressively reduced permissions within Jenkins.
 
+**NOTE**: this is where the plugin differs from the [upstream version][upstream]
+
 For the `view` role, the Jenkins permissions are:
 
 * hudson.model.Hudson.READ
 * hudson.model.Item.READ
 * com.cloudbees.plugins.credentials.CredentialsProvider.VIEW
-
-For the `edit` role, in addition to the permissions available to `view`:
-
 * hudson.model.Item.BUILD
 * hudson.model.Item.CONFIGURE
 * hudson.model.Item.CREATE
@@ -106,3 +108,6 @@ directory is shared across multiple Jenkins installations
 ## JVMs
 
 This plugin has been developed and tested almost exclusively with the OpenJDK JVM.  However, user testing has confirmed that it can run inside an IBM JDK if `-Dcom.ibm.jsse2.overrideDefaultTLS=true` is supplied as a JVM argument when starting Jenkins.
+
+
+[upstream]: https://github.com/jenkinsci/openshift-login-plugin
